@@ -1,0 +1,15 @@
+# Informações gerais do site
+title: Grids Fantasmas
+description: Acervo de pranchas de montagem da pesquisa de doutorado em Comunicação (PPGCOM/UFC).
+author: Thiago Henrique Gonçalves Alves
+lang: pt-BR
+
+# Endereço do site
+url: "https://thiagoggalves-arch.github.io"
+baseurl: "/grids-fantasmas"
+
+# Coleção de pranchas: cada arquivo em _pranchas vira uma página
+collections:
+  pranchas:
+    output: true
+    permalink: /pranchas/:name/
