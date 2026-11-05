@@ -4,9 +4,15 @@ Acervo de pranchas de montagem produzidas na pesquisa de doutorado em Comunicaç
 
 **Site:** https://thiagohgalves.github.io/gridsfantasmas/
 
-## Licença
+## Licença e direitos autorais
 
-As montagens são disponibilizadas sob a licença [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.pt-br). As imagens de terceiros são reproduzidas para fins de estudo e crítica (art. 46, III e VIII, da Lei nº 9.610/1998), e os direitos sobre elas pertencem aos seus titulares.
+As montagens (a seleção, o arranjo e a composição das pranchas) são de autoria de Thiago Henrique Gonçalves Alves e estão disponíveis sob a licença [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.pt-br).
+
+Os direitos sobre as obras originais reproduzidas nas pranchas pertencem a seus respectivos autores e editores. Essa licença não se estende a elas.
+
+As imagens de terceiros são reproduzidas sem fins lucrativos, exclusivamente para estudo e crítica, com indicação de autoria e origem, nos termos do art. 46, incisos III e VIII, da Lei nº 9.610/1998 (Lei de Direitos Autorais).
+
+Se você é titular de direitos sobre alguma obra reproduzida e deseja solicitar a revisão ou a remoção de conteúdo, entre em contato pelo formulário do site.
 
 ## Autor
 
