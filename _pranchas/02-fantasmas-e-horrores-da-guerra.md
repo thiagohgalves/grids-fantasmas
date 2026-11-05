@@ -19,4 +19,4 @@ referencias:
 
 Esta prancha reúne recortes de *Grama* (2020) e *A espera* (2021), de Keum Suk Gendry-Kim, em uma montagem no formato de um painel de 1,50 × 1,25 m.
 
-Foi apresentada na comunicação oral "O atlas como método: montagem, cronotopo e fabulação crítica em quadrinhos factuais", no XIX Encontro de Pesquisa e Pós-Graduação da UFC (2026).
+Foi apresentada na comunicação oral "O atlas como método: montagem, cronotopo e fabulação crítica em quadrinhos factuais" (trabalho nº 2346, área de Ciências Sociais Aplicadas I), no XIX Encontro de Pesquisa e Pós-Graduação, parte dos [Encontros Universitários da UFC 2026](https://sysprppg.ufc.br/eu/2026/), realizados de 4 a 6 de novembro de 2026 no Instituto de Cultura e Arte (ICA), em Fortaleza.
