@@ -1,0 +1,101 @@
+---
+layout: base
+---
+<p class="sobretitulo">Prancha {{ page.numero }} · {{ page.ano }}</p>
+<h1 class="titulo-principal">{{ page.titulo_completo | default: page.title }}</h1>
+<span class="selo">Parte de uma tese de doutorado em andamento</span>
+
+<figure class="figura-prancha">
+  <div class="visualizador" id="visualizador">
+    <img id="imagem-prancha" src="{{ page.imagem | relative_url }}" alt="{{ page.alt }}">
+  </div>
+  <div class="controles-zoom">
+    <button type="button" id="zoom-mais" aria-label="Aproximar">+</button>
+    <button type="button" id="zoom-menos" aria-label="Afastar">−</button>
+    <a href="{{ page.imagem | relative_url }}" target="_blank" rel="noopener">Abrir imagem em nova aba</a>
+  </div>
+  <figcaption><strong>Fonte:</strong> {{ page.fonte }}</figcaption>
+</figure>
+
+<div class="colunas">
+  <article>
+    <h2>Sobre a montagem</h2>
+    <div class="texto-longo">{{ content }}</div>
+
+    {% if page.ficha %}
+    <h2>Ficha técnica</h2>
+    <ol class="ficha">
+      {% for item in page.ficha %}<li>{{ item }}</li>{% endfor %}
+    </ol>
+    {% endif %}
+
+    <h2>Referências</h2>
+    {% for ref in page.referencias %}
+    <div class="referencia">{{ ref | markdownify }}</div>
+    {% endfor %}
+  </article>
+
+  <aside>
+    <div class="caixa">
+      <span class="caixa-rotulo">DOI</span>
+      <a href="https://doi.org/{{ page.doi }}">{{ page.doi }}</a>
+      <a class="botao" href="https://doi.org/{{ page.doi }}">Baixar no Zenodo</a>
+    </div>
+    <div class="caixa">
+      <span class="caixa-rotulo">Como citar</span>
+      <div id="citacao">{{ page.citacao | markdownify }}</div>
+      <button class="botao-secundario" type="button" id="copiar-citacao">Copiar citação</button>
+    </div>
+    <div class="caixa">
+      <span class="caixa-rotulo">Licença</span>
+      <p>Montagem: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.pt-br">CC BY-NC-ND 4.0</a></p>
+      <p>Imagens de terceiros reproduzidas para estudo e crítica (art. 46, III e VIII, Lei nº 9.610/1998). Direitos: © seus titulares.</p>
+    </div>
+  </aside>
+</div>
+
+<script>
+  (function () {
+    var vis = document.getElementById('visualizador');
+    var img = document.getElementById('imagem-prancha');
+    var nivel = 1;
+
+    // Zoom mantendo o centro da vista no lugar
+    function zoom(novo) {
+      var cx = (vis.scrollLeft + vis.clientWidth / 2) / vis.scrollWidth;
+      var cy = (vis.scrollTop + vis.clientHeight / 2) / vis.scrollHeight;
+      nivel = Math.min(4, Math.max(1, novo));
+      img.style.width = (nivel * 100) + '%';
+      vis.scrollLeft = cx * vis.scrollWidth - vis.clientWidth / 2;
+      vis.scrollTop = cy * vis.scrollHeight - vis.clientHeight / 2;
+    }
+    document.getElementById('zoom-mais').addEventListener('click', function () { zoom(nivel + 0.5); });
+    document.getElementById('zoom-menos').addEventListener('click', function () { zoom(nivel - 0.5); });
+
+    // Arrastar com o mouse para mover a imagem ampliada
+    var arrastando = false, x0, y0, sx, sy;
+    vis.addEventListener('mousedown', function (e) {
+      arrastando = true; x0 = e.clientX; y0 = e.clientY;
+      sx = vis.scrollLeft; sy = vis.scrollTop;
+      vis.classList.add('arrastando'); e.preventDefault();
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!arrastando) return;
+      vis.scrollLeft = sx - (e.clientX - x0);
+      vis.scrollTop = sy - (e.clientY - y0);
+    });
+    window.addEventListener('mouseup', function () {
+      arrastando = false; vis.classList.remove('arrastando');
+    });
+
+    // Copiar a citação
+    var botao = document.getElementById('copiar-citacao');
+    botao.addEventListener('click', function () {
+      var texto = document.getElementById('citacao').innerText.trim();
+      navigator.clipboard.writeText(texto).then(function () {
+        botao.textContent = 'Citação copiada';
+        setTimeout(function () { botao.textContent = 'Copiar citação'; }, 2000);
+      });
+    });
+  })();
+</script>
