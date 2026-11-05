@@ -5,7 +5,10 @@ titulo_completo: "Fantasmas e horrores da guerra em <em>Grama</em> e <em>A esper
 description: "Prancha de montagem a partir de Grama e A espera, de Keum Suk Gendry-Kim."
 numero: "02"
 ano: 2026
+data: 2026-11-04
 obras: "Keum Suk Gendry-Kim, Grama e A espera"
+obras_completas: "<em>Grama</em> (2020) e <em>A espera</em> (2021), de Keum Suk Gendry-Kim"
+montagem: Thiago Henrique Gonçalves Alves
 imagem: /assets/pranchas/prancha-02-fantasmas.png
 miniatura: /assets/pranchas/prancha-02-fantasmas-mini.png
 alt: "Prancha de montagem com recortes em preto e branco dos quadrinhos Grama e A espera, de Keum Suk Gendry-Kim, dispostos sobre fundo preto."

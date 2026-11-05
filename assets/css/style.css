@@ -14,6 +14,7 @@
   --acento: #d9b778;
   --acento-hover: #f0d49c;
   --sobre-acento: #111111;
+  --altura-cabecalho: 84px;
   color-scheme: dark;
 }
 
@@ -52,6 +53,11 @@
 /* 4. Base */
 * { box-sizing: border-box; }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--altura-cabecalho);
+}
+
 body {
   margin: 0;
   background: var(--fundo);
@@ -73,22 +79,41 @@ h1, h2, h3 {
 img { max-width: 100%; height: auto; display: block; }
 
 .container {
-  max-width: 1120px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(16px, 4vw, 48px);
 }
 
-/* 5. Cabeçalho */
-.cabecalho { border-bottom: 1px solid var(--linha); }
+/* Link "pular para o conteúdo": só aparece ao navegar pelo teclado */
+.pular {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: var(--acento);
+  color: var(--sobre-acento);
+  border-radius: 6px;
+}
+.pular:focus { top: 16px; }
+
+/* 5. Cabeçalho (fixo no topo) */
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--fundo);
+  border-bottom: 1px solid var(--linha);
+}
 
 .cabecalho .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px 24px;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 .marca {
@@ -103,13 +128,13 @@ img { max-width: 100%; height: auto; display: block; }
 .menu {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 8px 24px;
   align-items: center;
   font-size: 15px;
 }
 
 .menu a { color: var(--texto-3); text-decoration: none; }
-.menu a:hover, .menu a[aria-current="page"] { color: var(--texto); }
+.menu a:hover { color: var(--texto); }
 
 .botao-tema {
   width: 44px;
@@ -124,13 +149,27 @@ img { max-width: 100%; height: auto; display: block; }
   cursor: pointer;
 }
 
-/* Mostra o sol no escuro e a lua no claro */
+/* Sol no escuro, lua no claro */
 .icone-lua { display: none; }
 :root[data-theme="light"] .icone-sol { display: none; }
 :root[data-theme="light"] .icone-lua { display: block; }
 
-/* 6. Conteúdo */
+/* Logos: versão para fundo claro ou escuro, conforme o tema */
+.logo-claro { display: none; }
+:root[data-theme="light"] .logo-claro { display: block; }
+:root[data-theme="light"] .logo-escuro { display: none; }
+
+/* 6. Conteúdo e textos comuns */
 main.container { padding-top: 64px; padding-bottom: 96px; }
+
+.secao { padding: 24px 0 72px; }
+.secao + .secao { border-top: 1px solid var(--linha); padding-top: 72px; }
+
+.titulo-secao {
+  margin: 0 0 40px;
+  text-align: center;
+  font-size: clamp(30px, 4vw, 40px);
+}
 
 .sobretitulo {
   margin: 0 0 12px;
@@ -151,8 +190,7 @@ main.container { padding-top: 64px; padding-bottom: 96px; }
 }
 
 .aviso-tese {
-  max-width: 680px;
-  margin-top: 32px;
+  margin-top: 28px;
   padding: 18px 20px;
   border: 1px solid var(--linha-2);
   border-radius: 6px;
@@ -163,34 +201,296 @@ main.container { padding-top: 64px; padding-bottom: 96px; }
 
 .aviso-tese strong { color: var(--acento); font-weight: 600; }
 
-/* 7. Grade de pranchas (página inicial) */
-.grade-pranchas {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px;
-  margin-top: 24px;
+/* Botões */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--acento);
+  color: var(--sobre-acento);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.cartao {
+.botao:hover { background: var(--acento-hover); color: var(--sobre-acento); }
+
+.botao-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 6px;
+  border: 1px solid var(--linha-2);
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.botao-secundario:hover { border-color: var(--texto-3); }
+
+/* 7. Seção Sobre (duas colunas) */
+.sobre-colunas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 6vw, 96px);
+}
+
+.sobre-colunas h3 {
+  margin: 0 0 20px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.sobre-projeto p,
+.sobre-pesquisador .bio {
+  margin: 0 0 16px;
+  font-family: "Noto Serif", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--texto-2);
+}
+
+/* O aviso da tese desce até a base da coluna, alinhando as duas colunas */
+.sobre-projeto { display: flex; flex-direction: column; }
+.sobre-projeto .aviso-tese { margin-top: auto; }
+
+.sobre-pesquisador {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  color: var(--texto);
-  text-decoration: none;
+  align-items: center;
 }
 
-.cartao img {
-  aspect-ratio: 6 / 5;
+.sobre-pesquisador h3 { align-self: stretch; }
+.sobre-pesquisador .bio { align-self: stretch; margin-bottom: 24px; }
+
+.perfil {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px 24px;
+  margin-bottom: 20px;
+}
+
+.perfil-texto { display: flex; flex-direction: column; align-items: flex-start; }
+
+.foto {
+  flex: none;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   object-fit: cover;
-  background: #000000;
-  border: 1px solid var(--linha);
+  border: 1px solid var(--linha-2);
 }
 
-.cartao:hover .cartao-titulo { color: var(--acento); }
-.cartao-titulo { font-family: "Noto Serif", Georgia, serif; font-size: 20px; line-height: 1.35; }
-.cartao-meta { font-size: 14px; color: var(--texto-3); }
+.nome {
+  margin: 0 0 6px;
+  font-family: "Noto Serif", Georgia, serif;
+  font-size: 20px;
+  color: var(--texto);
+}
 
-/* 8. Página de cada prancha */
+.orcid {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 15px;
+  word-break: break-all;
+}
+
+.orcid img { width: 24px; height: 24px; flex: none; }
+
+@media (max-width: 860px) {
+  .sobre-colunas { grid-template-columns: 1fr; }
+}
+
+/* 8. Seção Pranchas (slider) */
+.dica {
+  margin: -24px 0 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--texto-3);
+}
+
+.slider { position: relative; }
+
+.slider-trilho {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.slider-trilho::-webkit-scrollbar { display: none; }
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  padding: 0 64px;
+}
+
+.slide-imagem {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--linha);
+  background: #000000;
+  cursor: zoom-in;
+}
+
+.slide-imagem img {
+  width: 100%;
+  aspect-ratio: 6 / 5;
+  object-fit: contain;
+}
+
+.slide-titulo { margin: 0 0 24px; font-size: clamp(26px, 3vw, 34px); }
+.slide-titulo a { color: var(--texto); text-decoration: none; }
+.slide-titulo a:hover { color: var(--acento); }
+
+.ficha-resumo { margin: 0 0 28px; }
+.ficha-resumo dt {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-3);
+}
+.ficha-resumo dd { margin: 2px 0 16px; color: var(--texto-2); word-break: break-word; }
+
+.slide-botoes { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.slider-seta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--linha-2);
+  background: var(--fundo-2);
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.slider-seta:disabled { opacity: 0.3; cursor: default; }
+.seta-anterior { left: 0; }
+.seta-proxima { right: 0; }
+
+.slider-pontos {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 28px;
+}
+
+.slider-pontos button {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.slider-pontos button::after {
+  content: "";
+  position: absolute;
+  inset: 11px;
+  border-radius: 50%;
+  background: var(--linha-2);
+}
+
+.slider-pontos button[aria-current="true"]::after { background: var(--acento); }
+
+@media (max-width: 860px) {
+  .slide { grid-template-columns: 1fr; padding: 0; }
+  .slider-seta { display: none; }
+}
+
+/* 9. Janelas (imagem ampliada e contato) */
+.modal {
+  border: 1px solid var(--linha-2);
+  border-radius: 8px;
+  background: var(--fundo);
+  color: var(--texto);
+  padding: 32px;
+}
+
+.modal::backdrop { background: rgba(0, 0, 0, 0.8); }
+
+.modal-fechar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-imagem {
+  width: min(96vw, 1400px);
+  padding: 56px 16px 16px;
+  text-align: center;
+}
+
+.modal-imagem img {
+  max-height: 78vh;
+  width: auto;
+  margin: 0 auto 16px;
+}
+
+.modal-contato { width: min(92vw, 560px); }
+.modal-contato h3 { margin: 0 0 24px; font-size: 26px; }
+
+.modal-contato form { display: flex; flex-direction: column; }
+
+.modal-contato label {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: var(--texto-2);
+}
+
+.modal-contato input,
+.modal-contato textarea {
+  margin: 0 0 18px;
+  padding: 12px;
+  border: 1px solid var(--linha-2);
+  border-radius: 6px;
+  background: var(--fundo-2);
+  color: var(--texto);
+  font: inherit;
+}
+
+.modal-contato .botao { align-self: flex-start; }
+.form-status { margin: 16px 0 0; font-size: 15px; color: var(--texto-2); }
+
+/* Campo invisível contra robôs */
+.armadilha { position: absolute; left: -9999px; }
+
+/* 10. Página de cada prancha */
 .selo {
   display: inline-block;
   margin-top: 20px;
@@ -216,7 +516,7 @@ main.container { padding-top: 64px; padding-bottom: 96px; }
   margin-top: 64px;
 }
 
-.colunas article { flex: 999 1 560px; min-width: 0; max-width: 680px; }
+.colunas article { flex: 999 1 560px; min-width: 0; max-width: 760px; }
 .colunas aside { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
 
 .caixa {
@@ -237,36 +537,17 @@ main.container { padding-top: 64px; padding-bottom: 96px; }
   color: var(--texto-3);
 }
 
-.botao {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  margin-top: 12px;
-  border-radius: 6px;
-  background: var(--acento);
-  color: var(--sobre-acento);
-  font-weight: 600;
-  text-decoration: none;
-}
+.caixa .botao { display: flex; width: 100%; margin-top: 12px; }
+.caixa .botao-secundario { width: 100%; margin-top: 8px; }
 
-.botao:hover { background: var(--acento-hover); color: var(--sobre-acento); }
+.colunas h2 { font-size: 28px; margin: 48px 0 16px; }
+.colunas article h2:first-child { margin-top: 0; }
+.ficha { padding-left: 22px; font-size: 15px; color: var(--texto-2); }
+.referencia p { margin: 0 0 12px; font-size: 15px; color: var(--texto-2); }
+.caixa p { margin: 0 0 8px; }
+.caixa a { word-break: break-all; }
 
-/* 9. Rodapé */
-.rodape { border-top: 1px solid var(--linha); }
-
-.rodape .container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 32px;
-  justify-content: space-between;
-  padding-top: 32px;
-  padding-bottom: 32px;
-  font-size: 14px;
-  color: var(--texto-3);
-}
-
-/* 10. Visualizador com zoom */
+/* Visualizador com zoom */
 .visualizador {
   aspect-ratio: 6 / 5;
   overflow: auto;
@@ -304,23 +585,80 @@ main.container { padding-top: 64px; padding-bottom: 96px; }
 
 .controles-zoom a { margin-left: 8px; font-size: 14px; }
 
-/* 11. Textos da página da prancha */
-.colunas h2 { font-size: 28px; margin: 48px 0 16px; }
-.colunas article h2:first-child { margin-top: 0; }
-.ficha { padding-left: 22px; font-size: 15px; color: var(--texto-2); }
-.referencia p { margin: 0 0 12px; font-size: 15px; color: var(--texto-2); }
-.caixa p { margin: 0 0 8px; }
-.caixa a { word-break: break-all; }
+/* 11. Rodapé */
+.rodape { border-top: 1px solid var(--linha); }
 
-.botao-secundario {
-  width: 100%;
-  min-height: 44px;
-  margin-top: 8px;
-  border-radius: 6px;
-  border: 1px solid var(--linha-2);
-  background: transparent;
-  color: var(--texto);
-  font: inherit;
-  font-size: 14px;
-  cursor: pointer;
+.rodape-bloco { padding: 64px 0 0; }
+.rodape-bloco + .rodape-bloco { border-top: 1px solid var(--linha); margin-top: 64px; }
+
+.rodape-texto {
+  max-width: 820px;
+  margin: 0 auto;
+  font-size: 15px;
+  color: var(--texto-2);
 }
+
+.rodape-texto p { margin: 0 0 14px; }
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 32px 56px;
+}
+
+.logo img { height: 60px; width: auto; }
+.logo-larga img { height: 84px; }
+.logo-quadrada img { height: 104px; }
+
+.fomento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 56px;
+  max-width: 1000px;
+  margin: 48px auto 0;
+  font-size: 14px;
+  color: var(--texto-2);
+}
+
+.fomento-item p { margin: 0 0 6px; }
+.fomento-nome { color: var(--texto); }
+
+@media (max-width: 760px) {
+  .fomento { grid-template-columns: 1fr; }
+}
+
+.rodape-final {
+  margin-top: 64px;
+  padding: 24px 0 32px;
+  border-top: 1px solid var(--linha);
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-3);
+}
+
+.rodape-final p { margin: 0 0 4px; }
+
+/* Botão flutuante: voltar ao topo */
+.voltar-topo {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--linha-2);
+  background: var(--fundo-2);
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.voltar-topo.visivel { opacity: 1; pointer-events: auto; }
+.voltar-topo:hover { color: var(--acento); }

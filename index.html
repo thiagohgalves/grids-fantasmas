@@ -1,0 +1,210 @@
+---
+layout: base
+title: Início
+---
+
+<!-- ============ LINHA 1: SOBRE ============ -->
+<section id="sobre" class="secao">
+  <h2 class="titulo-secao">Sobre</h2>
+
+  <div class="sobre-colunas">
+    <article class="sobre-projeto">
+      <h3>O projeto</h3>
+      <p><em>Grids Fantasmas</em> reúne as pranchas de montagem produzidas na pesquisa de doutorado que pensa, de forma crítica e analítica, o imperialismo por meio de histórias em quadrinhos factuais. A partir do Atlas Mnemosyne, de Aby Warburg, do conceito de constelação, de Walter Benjamin, e da montagem em Georges Didi-Huberman, as pranchas aproximam recortes de quadrinhos para fazer ver relações entre imagem, memória e história.</p>
+      <p>A pesquisa articula ainda as noções de cronotopo (Bakhtin) e de fabulação crítica (Saidiya Hartman), a Psicologia Social Crítica (Aluísio Ferreira de Lima e Antonio da Costa Ciampa) e as reflexões sobre imperialismo e guerra de Ariella Azoulay e Judith Butler.</p>
+      <div class="aviso-tese">
+        <strong>Tese em andamento.</strong> As pranchas são registros de tentativas e práticas do método e podem ser revistas ao longo da pesquisa.
+      </div>
+    </article>
+
+    <article class="sobre-pesquisador">
+      <h3>O pesquisador</h3>
+      <div class="perfil">
+        <img class="foto" src="{{ '/assets/img/perfil/thiago_perfil_github.jpg' | relative_url }}" alt="Thiago Henrique Gonçalves Alves" width="120" height="120">
+        <div class="perfil-texto">
+          <p class="nome">Thiago Henrique Gonçalves Alves</p>
+          <a class="orcid" href="https://orcid.org/0000-0002-6406-8392">
+            <img src="{{ '/assets/img/logos/orcid/orcid-id.svg' | relative_url }}" alt="ORCID iD" width="24" height="24">
+            https://orcid.org/0000-0002-6406-8392
+          </a>
+        </div>
+      </div>
+      <p class="bio">Doutorando e mestre em Comunicação pelo PPGCOM/UFC, com graduação em Cinema e Audiovisual e em Letras pela mesma universidade. Atualmente bolsista de doutorado do CNPq, foi bolsista da CAPES (Demanda Social) entre 2024 e 2026. Investiga como as relações de poder são representadas nas histórias em quadrinhos factuais, a partir da construção do tempo e do espaço e em diálogo com os estudos decoloniais. Integra os grupos de pesquisa Oficina Invisível de Investigação em Quadrinhos (OIIQ), Paralaxe (UFC) e Pixelgrafias. É também cineasta, quadrinista roteirista e crítico de cinema, membro da Aceccine e da Abraccine.</p>
+      <button class="botao" type="button" id="abrir-contato">Enviar mensagem</button>
+    </article>
+  </div>
+</section>
+
+<!-- ============ LINHA 2: PRANCHAS ============ -->
+{% assign pranchas = site.pranchas | sort: 'numero' %}
+{% assign meses = "janeiro,fevereiro,março,abril,maio,junho,julho,agosto,setembro,outubro,novembro,dezembro" | split: "," %}
+
+<section id="pranchas" class="secao">
+  <h2 class="titulo-secao">Pranchas</h2>
+  <p class="dica">Clique na imagem para ampliar.</p>
+
+  <div class="slider">
+    {% if pranchas.size > 1 %}
+    <button class="slider-seta seta-anterior" type="button" aria-label="Prancha anterior">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    {% endif %}
+
+    <div class="slider-trilho" id="trilho">
+      {% for p in pranchas %}
+      {% assign mes = p.data | date: "%-m" | minus: 1 %}
+      <article class="slide" aria-label="Prancha {{ p.numero }}">
+        <button class="slide-imagem" type="button"
+                data-ampliar="{{ p.imagem | relative_url }}"
+                data-pagina="{{ p.url | relative_url }}"
+                data-alt="{{ p.alt }}"
+                aria-label="Ampliar a prancha {{ p.numero }}">
+          <img src="{{ p.miniatura | relative_url }}" alt="{{ p.alt }}" loading="lazy">
+        </button>
+
+        <div class="slide-info">
+          <p class="sobretitulo">Prancha {{ p.numero }} · {{ meses[mes] }} de {{ p.data | date: "%Y" }}</p>
+          <h3 class="slide-titulo"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h3>
+          <dl class="ficha-resumo">
+            <dt>Obras</dt>
+            <dd>{{ p.obras_completas | default: p.obras }}</dd>
+            <dt>Montagem</dt>
+            <dd>{{ p.montagem | default: site.author }}</dd>
+            <dt>DOI</dt>
+            <dd><a href="https://doi.org/{{ p.doi }}">{{ p.doi }}</a></dd>
+          </dl>
+          <div class="slide-botoes">
+            <a class="botao" href="{{ p.url | relative_url }}">Ver página da prancha</a>
+            <button class="botao-secundario" type="button"
+                    data-ampliar="{{ p.imagem | relative_url }}"
+                    data-pagina="{{ p.url | relative_url }}"
+                    data-alt="{{ p.alt }}">Ampliar imagem</button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% if pranchas.size > 1 %}
+    <button class="slider-seta seta-proxima" type="button" aria-label="Próxima prancha">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    {% endif %}
+  </div>
+
+  {% if pranchas.size > 1 %}
+  <div class="slider-pontos" role="group" aria-label="Escolher prancha">
+    {% for p in pranchas %}
+    <button type="button" data-indice="{{ forloop.index0 }}" aria-label="Ir para a prancha {{ p.numero }}"></button>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<!-- ============ JANELA: IMAGEM AMPLIADA ============ -->
+<dialog class="modal modal-imagem" id="modal-imagem" aria-label="Prancha ampliada">
+  <button class="modal-fechar" type="button" aria-label="Fechar">×</button>
+  <img id="modal-imagem-img" src="" alt="">
+  <a class="botao" id="modal-imagem-link" href="#">Ver página da prancha</a>
+</dialog>
+
+<!-- ============ JANELA: CONTATO ============ -->
+<dialog class="modal modal-contato" id="modal-contato" aria-labelledby="contato-titulo">
+  <button class="modal-fechar" type="button" aria-label="Fechar">×</button>
+  <h3 id="contato-titulo">Enviar mensagem</h3>
+  <form id="form-contato">
+    <input type="hidden" name="access_key" value="1537e7cb-972b-4b5e-bb3a-00138e56f987">
+    <input type="hidden" name="from_name" value="Site Grids Fantasmas">
+    <!-- Campo invisível contra robôs: pessoas não veem nem preenchem -->
+    <input type="checkbox" name="botcheck" class="armadilha" tabindex="-1" autocomplete="off">
+
+    <label for="campo-assunto">Assunto</label>
+    <input id="campo-assunto" type="text" name="subject" required>
+
+    <label for="campo-email">Seu e-mail</label>
+    <input id="campo-email" type="email" name="email" required autocomplete="email">
+
+    <label for="campo-mensagem">Mensagem</label>
+    <textarea id="campo-mensagem" name="message" rows="6" required></textarea>
+
+    <button class="botao" type="submit">Enviar</button>
+    <p class="form-status" id="form-status" role="status"></p>
+  </form>
+</dialog>
+
+<script>
+  (function () {
+    // ---- Slider de pranchas ----
+    var trilho = document.getElementById('trilho');
+    var slides = trilho.querySelectorAll('.slide');
+    var pontos = document.querySelectorAll('.slider-pontos button');
+    var anterior = document.querySelector('.seta-anterior');
+    var proxima = document.querySelector('.seta-proxima');
+
+    function indiceAtual() {
+      return Math.round(trilho.scrollLeft / trilho.clientWidth);
+    }
+    function irPara(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      trilho.scrollTo({ left: i * trilho.clientWidth, behavior: 'smooth' });
+    }
+    function atualizar() {
+      var i = indiceAtual();
+      pontos.forEach(function (p, n) { p.setAttribute('aria-current', n === i ? 'true' : 'false'); });
+      if (anterior) anterior.disabled = i === 0;
+      if (proxima) proxima.disabled = i === slides.length - 1;
+    }
+    if (anterior) anterior.addEventListener('click', function () { irPara(indiceAtual() - 1); });
+    if (proxima) proxima.addEventListener('click', function () { irPara(indiceAtual() + 1); });
+    pontos.forEach(function (p) {
+      p.addEventListener('click', function () { irPara(Number(p.dataset.indice)); });
+    });
+    trilho.addEventListener('scroll', function () { window.requestAnimationFrame(atualizar); }, { passive: true });
+    atualizar();
+
+    // ---- Janela da imagem ampliada ----
+    var modalImg = document.getElementById('modal-imagem');
+    document.querySelectorAll('[data-ampliar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var img = document.getElementById('modal-imagem-img');
+        img.src = b.dataset.ampliar;
+        img.alt = b.dataset.alt;
+        document.getElementById('modal-imagem-link').href = b.dataset.pagina;
+        modalImg.showModal();
+      });
+    });
+
+    // ---- Janela de contato ----
+    var modalContato = document.getElementById('modal-contato');
+    document.getElementById('abrir-contato').addEventListener('click', function () {
+      modalContato.showModal();
+    });
+
+    // Fechar janelas: botão × ou clique fora
+    document.querySelectorAll('.modal').forEach(function (m) {
+      m.querySelector('.modal-fechar').addEventListener('click', function () { m.close(); });
+      m.addEventListener('click', function (e) { if (e.target === m) m.close(); });
+    });
+
+    // ---- Envio do formulário (Web3Forms) ----
+    var form = document.getElementById('form-contato');
+    var status = document.getElementById('form-status');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.textContent = 'Enviando…';
+      fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(form) })
+        .then(function (r) { return r.json(); })
+        .then(function (dados) {
+          if (dados.success) {
+            status.textContent = 'Mensagem enviada. Obrigado pelo contato!';
+            form.reset();
+          } else {
+            status.textContent = 'Não foi possível enviar agora. Tente novamente mais tarde.';
+          }
+        })
+        .catch(function () {
+          status.textContent = 'Não foi possível enviar agora. Verifique sua conexão e tente novamente.';
+        });
+    });
+  })();
+</script>
