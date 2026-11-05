@@ -6,7 +6,7 @@ layout: base
 <span class="selo">Parte de uma tese de doutorado em andamento</span>
 
 <figure class="figura-prancha">
-  <div class="visualizador" id="visualizador">
+  <div class="visualizador" id="visualizador" style="overflow: hidden">
     <img id="imagem-prancha" src="{{ page.imagem | relative_url }}" alt="{{ page.alt }}">
   </div>
   <div class="controles-zoom">
@@ -66,6 +66,8 @@ layout: base
       var cy = (vis.scrollTop + vis.clientHeight / 2) / vis.scrollHeight;
       nivel = Math.min(4, Math.max(1, novo));
       img.style.width = (nivel * 100) + '%';
+      // Sem zoom: esconde a rolagem. Com zoom: permite rolar (inclusive com o dedo)
+      vis.style.overflow = nivel > 1 ? 'auto' : 'hidden';
       vis.scrollLeft = cx * vis.scrollWidth - vis.clientWidth / 2;
       vis.scrollTop = cy * vis.scrollHeight - vis.clientHeight / 2;
     }
@@ -75,6 +77,7 @@ layout: base
     // Arrastar com o mouse para mover a imagem ampliada
     var arrastando = false, x0, y0, sx, sy;
     vis.addEventListener('mousedown', function (e) {
+      if (nivel === 1) return;
       arrastando = true; x0 = e.clientX; y0 = e.clientY;
       sx = vis.scrollLeft; sy = vis.scrollTop;
       vis.classList.add('arrastando'); e.preventDefault();
