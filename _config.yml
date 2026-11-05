@@ -5,8 +5,8 @@ author: Thiago Henrique Gonçalves Alves
 lang: pt-BR
 
 # Endereço do site
-url: "https://thiagoggalves-arch.github.io"
-baseurl: "/grids-fantasmas"
+url: "https://thiagohgalves.github.io"
+baseurl: "/gridsfantasmas"
 
 # Coleção de pranchas: cada arquivo em _pranchas vira uma página
 collections:
